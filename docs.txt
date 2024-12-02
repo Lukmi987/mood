@@ -1,0 +1,17 @@
+API Routes in Next.js
+Server-Side Functionality:
+API routes in Next.js are special server-side functions used to handle backend logic directly within your Next.js app. They are not part of the client-side React app but run on the server when a request is made.
+
+Structure:
+API routes are created in the pages/api directory. Each file in this directory maps to an API endpoint. For example:
+
+pages/api/hello.js → /api/hello
+
+======================
+Layout and Page Structure
+2. Role of layout.tsx
+layout.tsx: This file acts as a wrapper for all pages contained within the (dashboard) directory. It can include shared components such as headers, footers, or sidebars, and it uses the children prop to render the content of any nested pages.
+3. Automatic Page Loading
+When you navigate to the route corresponding to app/(dashboard)/journal/page.tsx, Next.js automatically loads this page within the context of the layout.tsx. Here’s how it works:
+Routing Mechanism: Next.js uses a file-based routing system. When you access the /dashboard/journal route, Next.js looks for a corresponding layout and page.
+Rendering Process: The framework first renders layout.tsx, which includes any static components defined in it. Then, it automatically injects the content from page.tsx into the layout’s children area.
