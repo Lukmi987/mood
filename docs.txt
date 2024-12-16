@@ -15,3 +15,6 @@ layout.tsx: This file acts as a wrapper for all pages contained within the (dash
 When you navigate to the route corresponding to app/(dashboard)/journal/page.tsx, Next.js automatically loads this page within the context of the layout.tsx. Here’s how it works:
 Routing Mechanism: Next.js uses a file-based routing system. When you access the /dashboard/journal route, Next.js looks for a corresponding layout and page.
 Rendering Process: The framework first renders layout.tsx, which includes any static components defined in it. Then, it automatically injects the content from page.tsx into the layout’s children area.
+
+
+Revalidation cache
