@@ -18,3 +18,8 @@ Rendering Process: The framework first renders layout.tsx, which includes any st
 
 
 Revalidation cache
+
+===================
+LangChain is a framework for developing applications powered by large language models (LLMs).
+It is like SDK for LLMs
+https://js.langchain.com/docs/introduction/
