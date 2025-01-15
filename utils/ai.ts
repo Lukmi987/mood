@@ -7,7 +7,6 @@ const zodSchema = z.object({
   mood: z
     .string()
     .describe('the mood of the person who wrote the journal entry.'),
-  // subject: z.string().describe('the subject of the journal entry.'),
   negative: z
     .boolean()
     .describe(
@@ -29,14 +28,6 @@ const zodSchema = z.object({
 
 const parser = StructuredOutputParser.fromZodSchema(zodSchema)
 
-// const chain = RunnableSequence.from([
-//   ChatPromptTemplate.fromTemplate(
-//     'Answer the users question as best as possible.\n{format_instructions}\n{question}'
-//   ),
-//   model,
-//   parser,
-// ])
-
 const getPrompt = async (content) => {
   const format_instructions = parser.getFormatInstructions()
 
@@ -51,15 +42,18 @@ const getPrompt = async (content) => {
     entry: content,
   })
 
-  console.log('input je!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1', input)
-
   return input
 }
 
-export const analyze = async (content) => {
-  const input = await getPrompt(content)
+export const analyze = async (entry) => {
+  console.log('moje entry je **************************', entry)
+  const input = await getPrompt(entry)
   const model = new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0 })
   const result = await model.invoke(input)
-
-  console.log('resulet je++++++++++++++++++++~~~~~~~~~', result)
+  console.log('moje result je **************************', result)
+  try {
+    return parser.parse(result.content)
+  } catch (e) {
+    console.log('error je', e)
+  }
 }

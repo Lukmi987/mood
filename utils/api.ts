@@ -11,10 +11,10 @@ export const updateEntry = async (id, content) => {
       body: JSON.stringify({ content }),
     })
   )
-
+  console.log('useAutosave rest 1', rest) // zde vraci undefined
   if (rest.ok) {
     const data = await rest.json()
-    return data
+    return data?.data
   }
 }
 
