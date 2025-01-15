@@ -6,6 +6,15 @@ Structure:
 API routes are created in the pages/api directory. Each file in this directory maps to an API endpoint. For example:
 
 pages/api/hello.js → /api/hello
+----------------------------------
+Key Points:
+Default Behavior in the app Directory:
+
+All components in the app directory are Server Components unless explicitly specified as Client Components.
+
+How to Make It a Client Component: If you want this component to run on the client, you need to explicitly declare it as
+ a Client Component by adding the following directive at the top of the file: 'use client';
+
 
 ======================
 Layout and Page Structure
@@ -23,3 +32,8 @@ Revalidation cache
 LangChain is a framework for developing applications powered by large language models (LLMs).
 It is like SDK for LLMs
 https://js.langchain.com/docs/introduction/
+
+
+**PRISMA commands
+npx prisma db push // to update db 
+npx prisma studio // to si visual structure 
