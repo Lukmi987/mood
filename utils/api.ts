@@ -11,7 +11,6 @@ export const updateEntry = async (id, content) => {
       body: JSON.stringify({ content }),
     })
   )
-  console.log('useAutosave rest 1', rest) // zde vraci undefined
   if (rest.ok) {
     const data = await rest.json()
     return data?.data
@@ -31,4 +30,17 @@ export const createNewEntry = async () => {
   }
 }
 
-//FUNCTION which update an entry
+export const askQuestion = async (question) => {
+  console.log('v askQuestion je', question)
+  const res = await fetch(
+    new Request(createURL(`/api/question`), {
+      method: 'POST',
+      body: JSON.stringify({ question }),
+    })
+  )
+
+  if (res.ok) {
+    const data = await res.json()
+    return data.data
+  }
+}
