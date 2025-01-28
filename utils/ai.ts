@@ -1,7 +1,10 @@
-import { ChatOpenAI } from '@langchain/openai'
+import { ChatOpenAI, OpenAI, OpenAIEmbeddings } from '@langchain/openai'
 import { StructuredOutputParser } from '@langchain/core/output_parsers'
 import { PromptTemplate } from '@langchain/core/prompts'
 import z from 'zod'
+import { Document } from 'langchain/document'
+import { loadQARefineChain } from 'langchain/chains'
+import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 
 const zodSchema = z.object({
   mood: z
@@ -46,14 +49,39 @@ const getPrompt = async (content) => {
 }
 
 export const analyze = async (entry) => {
-  console.log('moje entry je **************************', entry)
   const input = await getPrompt(entry)
   const model = new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0 })
   const result = await model.invoke(input)
-  console.log('moje result je **************************', result)
   try {
     return parser.parse(result.content)
   } catch (e) {
     console.log('error je', e)
   }
+}
+
+export const qa = async (question, entries) => {
+  const docs = entries.map((entry) => {
+    return new Document({
+      pageContent: entry.content,
+      metadata: { id: entry.id, createdAt: entry.createdAt },
+    })
+  })
+
+  console.log('qa question 4', question)
+  console.log('qa docs 5', docs)
+
+  const model = new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0 })
+  const chain = loadQARefineChain(model)
+  const embeddings = new OpenAIEmbeddings() // embeddings are group of vectors
+  const store = await MemoryVectorStore.fromDocuments(docs, embeddings)
+  const relevantDocs = await store.similaritySearch(question) // At this point we know which entries we need to answer the question, based on the question these are selected entries
+  //store.similaritySearch takes your question puts in the database
+  // we need to answer the question
+
+  const res = await chain.invoke({
+    input_documents: relevantDocs,
+    question,
+  })
+  console.log('qa docs 6', res)
+  return res.output_text
 }

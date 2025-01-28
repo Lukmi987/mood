@@ -6,12 +6,9 @@ import { useAutosave } from 'react-autosave'
 import Spinner from './Spinner'
 
 const Editor = ({ entry }) => {
-  console.log('editor entry je', entry)
   const [value, setValue] = useState(entry.content)
   const [isLoading, setIsLoading] = useState(false)
   const [analysis, setAnalysis] = useState(entry.analysis)
-
-  console.log('analysis je !!!!!!!!!!!!!1', analysis)
 
   const { mood, summary, color, subject, negative } = analysis ?? {}
 
@@ -27,7 +24,6 @@ const Editor = ({ entry }) => {
     onSave: async (_value) => {
       setIsLoading(true)
       const data = await updateEntry(entry.id, _value)
-      console.log('useAutosave data jsou', data)
       setAnalysis(data.analysis)
       setIsLoading(false)
     },
