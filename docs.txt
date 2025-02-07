@@ -37,3 +37,26 @@ https://js.langchain.com/docs/introduction/
 **PRISMA commands
 npx prisma db push // to update db 
 npx prisma studio // to si visual structure 
+
+===============================================
+Queries
+SQL Query	                                                Prisma Equivalent
+SELECT * FROM users WHERE email = 'test@example.com';	    prisma.user.findUnique({ where: { email: "test@example.com" } })
+INSERT INTO users (email) VALUES ('test@example.com');	    prisma.user.create({ data: { email: "test@example.com" } })
+UPDATE users SET email = 'new@example.com' WHERE id = 1;	prisma.user.update({ where: { id: 1 }, data: { email: "new@example.com" } })
+DELETE FROM users WHERE id = 1;	                            prisma.user.delete({ where: { id: 1 } })
+
+Constraints
+SQL	            Prisma
+PRIMARY KEY 	@id
+NOT NULL	    Fields are required unless marked ? (optional)
+UNIQUE	        @unique on a field or @@unique([field]) for multiple fields
+FOREIGN         KEY	@relation(fields: [fk], references: [id])
+INDEX	        @@index([field])
+
+
+Relationships (1:1, 1:M, M:N)
+Relationship	SQL (Java/Hibernate)	    Prisma
+One-to-One	@OneToOne + @JoinColumn	        @relation(fields: [foreignKey], references: [id]) + @unique on foreign key
+One-to-Many	@OneToMany + @JoinColumn	    Foreign key on the "many" side
+Many-to-Many	@ManyToMany	                Prisma creates a junction table automatically

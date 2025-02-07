@@ -21,6 +21,7 @@ model User {
   clerkId   String         @unique
   email     String         @unique
   entries   JournalEntry[]
+  analyses Analysis[]
 }
 
 model JournalEntry {
@@ -45,14 +46,24 @@ model Analysis {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  entryId String
-  entry   JournalEntry @relation(fields: [entryId], references: [id], onDelete:  Cascade)
+  entryId String @unique //This directly marks the entryId column as unique.
+  //It ensures that each entryId value must be unique, which enforces the one-to-one relationship between JournalEntry and Analysis.
+  entry   JournalEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   mood     String
   summary  String  @db.Text
   color    String
   negative Boolean
   subject String
+  sentimentScore Float @default(0)
 
-  @@unique([entryId])
+
+  @@index([userId])
+  //  @@unique([entryId])  Using @@unique([entryId]) (Model-Level) This defines a unique constraint at the model level.
+ //The effect is the same as @unique on entryId, but this format is useful when:
+ //   You want to combine multiple fields into a composite unique constraint, e.g.:
+  //@@unique([entryId, userId]) This ensures that each combination of entryId and userId must be unique, but neither field alone has to be unique.
 }
