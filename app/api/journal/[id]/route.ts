@@ -32,7 +32,9 @@ export const PATCH = async (request, { params }) => {
     where: {
       entryId: updatedEntry.id,
     }, //data what you want to update
+
     create: {
+      userId: user.id,
       entryId: updatedEntry.id,
       ...analysis,
     },
